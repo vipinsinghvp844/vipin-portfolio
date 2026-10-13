@@ -1,0 +1,264 @@
+'use client'
+
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import styles from './LoadingScreen.module.css'
+
+const GREETINGS = [
+  { text: 'Hii Vipin', lang: 'English', sub: 'EN' },
+  { text: 'नमस्ते विपिन', lang: 'Hindi', sub: 'HI' },
+  { text: 'Bonjour Vipin', lang: 'French', sub: 'FR' },
+  { text: 'こんにちは Vipin', lang: 'Japanese', sub: 'JA' },
+  { text: 'Hola Vipin', lang: 'Spanish', sub: 'ES' },
+  { text: 'Ciao Vipin', lang: 'Italian', sub: 'IT' },
+  { text: 'Hallo Vipin', lang: 'German', sub: 'DE' },
+  { text: 'مرحباً Vipin', lang: 'Arabic', sub: 'AR' },
+  { text: '你好 Vipin', lang: 'Chinese', sub: 'ZH' },
+  { text: 'Olá Vipin', lang: 'Portuguese', sub: 'PT' },
+  { text: '안녕하세요 Vipin', lang: 'Korean', sub: 'KO' },
+  { text: 'Привет Vipin', lang: 'Russian', sub: 'RU' },
+  { text: 'Hej Vipin', lang: 'Swedish', sub: 'SV' },
+  { text: 'வணக்கம் Vipin', lang: 'Tamil', sub: 'TA' },
+  { text: 'ନମସ୍କାର Vipin', lang: 'Welcome', sub: 'READY' },
+]
+
+const NAME_WORDS = ['VIPIN', 'SINGH', 'PARIHAR']
+
+const STAGES = [
+  { threshold: 0, step: '[ 01/04 ]', text: 'INITIALIZING ENVIRONMENT' },
+  { threshold: 28, step: '[ 02/04 ]', text: 'COMPILING SYSTEM MODULES' },
+  { threshold: 60, step: '[ 03/04 ]', text: 'LOADING WORDPRESS MODULES' },
+  { threshold: 88, step: '[ 04/04 ]', text: 'FINALIZING PORTFOLIO ASSETS' },
+  { threshold: 100, step: '[ 05/05 ]', text: 'SYSTEM READY — WELCOME' },
+]
+
+export default function LoadingScreen({ onComplete }) {
+  const [progress, setProgress] = useState(0)
+  const [isFinished, setIsFinished] = useState(false)
+  const [greetingIndex, setGreetingIndex] = useState(0)
+  const animationFrameRef = useRef(null)
+
+  // Multilingual greeting rotation synced with loading progress
+  useEffect(() => {
+    const totalGreetings = GREETINGS.length
+    const computedIndex = Math.min(
+      totalGreetings - 1,
+      Math.floor((progress / 100) * totalGreetings)
+    )
+    setGreetingIndex(computedIndex)
+  }, [progress])
+
+  // Smooth loading progression loop with multilingual greetings cycle
+  useEffect(() => {
+    let startTimestamp = null
+    const targetDuration = 2200
+
+    const updateProgress = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp
+      const elapsed = timestamp - startTimestamp
+      const progressRatio = Math.min(elapsed / targetDuration, 1)
+
+      // Smooth custom easing curve: brisk start, steady mid pace, clean finish into 100
+      let easedValue
+      if (progressRatio < 0.25) {
+        easedValue = (progressRatio / 0.25) * 35
+      } else if (progressRatio < 0.75) {
+        const midRatio = (progressRatio - 0.25) / 0.5
+        easedValue = 35 + midRatio * 45
+      } else if (progressRatio < 0.95) {
+        const lateRatio = (progressRatio - 0.75) / 0.2
+        easedValue = 80 + lateRatio * 18
+      } else {
+        easedValue = 100
+      }
+
+      const currentInt = Math.min(100, Math.floor(easedValue))
+      setProgress(currentInt)
+
+      if (progressRatio < 1) {
+        animationFrameRef.current = requestAnimationFrame(updateProgress)
+      } else {
+        setProgress(100)
+        setTimeout(() => {
+          setIsFinished(true)
+        }, 220)
+      }
+    }
+
+    animationFrameRef.current = requestAnimationFrame(updateProgress)
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [])
+
+  // Allow skip via keyboard (Escape, Space, or Enter)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') {
+        setProgress(100)
+        setIsFinished(true)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  const currentStage = STAGES.slice().reverse().find(s => progress >= s.threshold) || STAGES[0]
+  const currentGreeting = GREETINGS[greetingIndex] || GREETINGS[0]
+
+  return (
+    <AnimatePresence onExitComplete={onComplete}>
+      {!isFinished && (
+        <motion.div
+          className={styles.loaderWrap}
+          initial={{ y: 0 }}
+          exit={{
+            y: '-100%',
+            transition: {
+              duration: 0.85,
+              ease: [0.76, 0, 0.24, 1], // Smooth curtain wipe curve
+            },
+          }}
+        >
+          {/* Top Bar */}
+          <div className={styles.topBar}>
+            <motion.div
+              className={styles.brandTag}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+            >
+              <span className={styles.brandBadge}>VSP</span>
+              <span>PORTFOLIO // ©2026</span>
+            </motion.div>
+
+            <motion.div
+              className={styles.metaInfo}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+            >
+              <span className={styles.livePulse} />
+              <span>ODISHA, IN • 20.2961° N</span>
+            </motion.div>
+          </div>
+
+          {/* Center Content: Multilingual Hello Greeting + Bold Name */}
+          <div className={styles.centerContent}>
+            {/* Dynamic Multilingual Hello Greeting Box */}
+            <motion.div
+              className={styles.greetingBox}
+              initial={{ opacity: 0, scale: 0.9, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <span className={styles.greetingDot} />
+              <div className={styles.greetingTicker}>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={currentGreeting.text}
+                    className={styles.greetingText}
+                    initial={{ y: 16, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -16, opacity: 0 }}
+                    transition={{ duration: 0.18, ease: 'easeOut' }}
+                  >
+                    {currentGreeting.text}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+              <span className={styles.greetingLangBadge}>
+                {currentGreeting.lang}
+              </span>
+            </motion.div>
+
+            {/* Bold Name with Animated Characters — pure CSS for compositor-thread smoothness */}
+            <div className={styles.nameTitle} role="heading" aria-level={2} aria-label="VIPIN SINGH PARIHAR">
+              {NAME_WORDS.map((word, wordIndex) => (
+                <span key={wordIndex} className={styles.nameWord}>
+                  {word.split('').map((char, charIndex) => (
+                    <span
+                      key={charIndex}
+                      className={styles.nameChar}
+                      style={{
+                        animationDelay: `${0.15 + wordIndex * 0.12 + charIndex * 0.038}s`,
+                      }}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>
+              ))}
+            </div>
+
+            <motion.div
+              className={styles.subtitleWrapper}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <span className={styles.roleTag}>
+                COMPUTER SCIENCE ENGINEER • AI SYSTEMS
+              </span>
+            </motion.div>
+
+            <motion.button
+              type="button"
+              className={styles.skipHint}
+              onClick={() => {
+                setProgress(100)
+                setIsFinished(true)
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              whileHover={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              [ Press Space or Click to Skip ]
+            </motion.button>
+          </div>
+
+          {/* Bottom Bar: Status on Left, Bold Percentage on Right */}
+          <div className={styles.bottomBar}>
+            {/* Bottom Left: Loading Phase Status */}
+            <div className={styles.statusLeft}>
+              <span className={styles.stepCounter}>{currentStage.step}</span>
+              <motion.span
+                key={currentStage.text}
+                className={styles.statusMessage}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {currentStage.text}
+              </motion.span>
+            </div>
+
+            {/* Bottom Right: Smooth Percentage Counter & Progress Line */}
+            <div className={styles.percentRight}>
+              <div className={styles.percentNumber}>
+                <span>{String(progress).padStart(2, '0')}</span>
+                <span className={styles.percentSymbol}>%</span>
+              </div>
+              <div
+                className={styles.progressBarTrack}
+                role="progressbar"
+                aria-valuenow={progress}
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div
+                  className={styles.progressBarFill}
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}

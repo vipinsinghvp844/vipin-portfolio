@@ -1,0 +1,57 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
+import Navbar from '../components/Navbar'
+import Hero from '../components/Hero'
+import About from '../components/About'
+import Projects from '../components/Projects'
+import LoadingScreen from '../components/LoadingScreen'
+import ClickSpark from '../components/ClickSpark'
+
+const Achievements = dynamic(() => import('../components/Achievements'), {
+  ssr: true,
+})
+const Blog = dynamic(() => import('../components/Blog'), {
+  ssr: true,
+})
+const Contact = dynamic(() => import('../components/Contact'), {
+  ssr: true,
+})
+const Footer = dynamic(() => import('../components/Footer'), {
+  ssr: true,
+})
+
+export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    if (isLoading) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }, [isLoading])
+
+  return (
+    <ClickSpark sparkColor="#ff6600ff"
+      sparkSize={10}
+      sparkRadius={15}
+      sparkCount={8}
+      duration={400}
+    >
+      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+      <Navbar />
+      <main id="main-content">
+        <Hero isLoading={isLoading} />
+        <About />
+        <Projects />
+        <Achievements />
+        <Blog />
+        <Contact />
+      </main>
+      <Footer />
+    </ClickSpark>
+  )
+}
+

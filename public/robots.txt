@@ -1,0 +1,39 @@
+# Robots.txt for vipinsinghparihar.dev
+# Portfolio of Vipin Singh Parihar — Computer Science Engineer
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /.env
+
+# Feeds, Sitemaps & AI Context Files
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /rss.xml
+Allow: /feed.xml
+Allow: /sitemap.xml
+
+# Sitemap location
+Sitemap: https://vipinsinghparihar.dev/sitemap.xml
+
+# Host directive
+Host: https://vipinsinghparihar.dev
+
+# Search Engine & AI Crawler Rules
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /

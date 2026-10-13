@@ -1,0 +1,473 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(242, 239, 233, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.04), inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  transition: background .35s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color .35s cubic-bezier(0.16, 1, 0.3, 1), 
+              backdrop-filter .35s cubic-bezier(0.16, 1, 0.3, 1), 
+              -webkit-backdrop-filter .35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow .35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav.scrolled {
+  background: rgba(235, 232, 226, 0.88);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.12);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.nav.navOpen {
+  background: rgba(242, 240, 236, 0.94);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.12);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+:global([data-theme="dark"]) .nav {
+  background: rgba(14, 14, 18, 0.68);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 28px -2px rgba(0, 0, 0, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+}
+
+:global([data-theme="dark"]) .nav.scrolled {
+  background: rgba(12, 12, 16, 0.86);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .nav.navOpen {
+  background: rgba(14, 14, 18, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+}
+
+.inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* ─── Logo ────────────────────────────────────── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.logoBox {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  color: #1A1A1A;
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  border: var(--bw) solid var(--border);
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 
+    3px 4px 10px rgba(255, 107, 0, 0.25),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.logoText {
+  font-family: var(--font-body);
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -.01em;
+  white-space: nowrap;
+}
+
+/* ─── Desktop Links ───────────────────────────── */
+.links {
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.linkItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.link {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: .84rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: .42rem .72rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: color .2s ease;
+  z-index: 1;
+}
+
+.link:hover {
+  color: var(--text-primary);
+}
+
+.linkActive {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* 3D Glass Sliding Active Pill */
+.activePill {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 14px rgba(0, 0, 0, 0.06),
+    -2px -2px 6px rgba(255, 255, 255, 0.9),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8);
+  z-index: -1;
+}
+
+.linkContent {
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.resumeLink {
+  color: var(--text-primary);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.hireBtn {
+  font-family: var(--font-body);
+  font-size: .82rem;
+  font-weight: 700;
+  padding: .38rem 1rem;
+  height: 34px;
+  background: var(--accent);
+  color: #1A1A1A;
+  border: var(--bw) solid var(--border);
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 
+    2px 3px 8px rgba(255, 107, 0, 0.25),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8);
+  transition: all .2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  white-space: nowrap;
+  margin-left: 0.25rem;
+}
+
+.hireBtn:hover {
+  background: var(--ink);
+  color: #FFFFFF;
+  border-color: var(--border);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ─── Animated Hamburger Button ───────────────── */
+.ham {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  gap: 5px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  border-radius: 12px;
+  padding: .4rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  z-index: 105;
+}
+
+.ham span {
+  display: block;
+  width: 22px;
+  height: 2.2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.hamOpen .hamLine1 {
+  transform: translateY(7.2px) rotate(45deg);
+}
+
+.hamOpen .hamLine2 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamOpen .hamLine3 {
+  transform: translateY(-7.2px) rotate(-45deg);
+}
+
+/* ─── Animated Mobile Drawer ──────────────────── */
+.drawer {
+  background: rgba(242, 240, 236, 0.88);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-top: 1px solid rgba(26, 26, 26, 0.08);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.12);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100dvh - 70px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+}
+
+.drawerInner {
+  padding: 1.25rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+}
+
+.drawerLink {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: .75rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+.drawerLink:active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.drawerLinkActive {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: var(--accent);
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(255, 107, 0, 0.15);
+}
+
+.drawerIndex {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.drawerText {
+  flex: 1;
+  margin-left: .85rem;
+}
+
+.drawerArrow {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.drawerTranslateRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.9rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  border-radius: 12px;
+  margin-top: 0.5rem;
+}
+
+.drawerTranslateLabel {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.drawerActions {
+  display: flex;
+  gap: .75rem;
+  margin-top: .75rem;
+}
+
+.drawerResume,
+.drawerHire {
+  flex: 1;
+  text-align: center;
+  padding: .85rem;
+  border-radius: 14px;
+  font-family: var(--font-body);
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.drawerResume {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  border: 1px solid rgba(26, 26, 26, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.drawerHire {
+  background: var(--accent);
+  color: #1A1A1A;
+  border: var(--bw) solid var(--border);
+}
+
+@media (max-width: 1040px) {
+  .links { display: none; }
+  .ham { display: flex; }
+}
+
+@media (max-width: 480px) {
+  .drawerInner {
+    padding: 1rem 1.15rem 1.5rem;
+  }
+
+  .logoText {
+    font-size: .85rem;
+  }
+}
+
+/* ─── Dark Mode Adjustments ─── */
+:global([data-theme="dark"]) .activePill {
+  background: rgba(45, 43, 60, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+:global([data-theme="dark"]) .logoBox {
+  box-shadow: none !important;
+  border-color: var(--border);
+}
+
+:global([data-theme="dark"]) .hireBtn {
+  background: var(--accent);
+  color: #1A1A1A;
+  border-color: var(--accent);
+  box-shadow: none !important;
+}
+
+:global([data-theme="dark"]) .hireBtn:hover {
+  background: #FF8533;
+  color: #1A1A1A;
+  border-color: #FF8533;
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35) !important;
+}
+
+:global([data-theme="dark"]) .ham {
+  background: rgba(36, 35, 48, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+:global([data-theme="dark"]) .drawer {
+  background: rgba(20, 19, 26, 0.88);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6);
+}
+
+:global([data-theme="dark"]) .drawerLink {
+  background: rgba(36, 35, 48, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+:global([data-theme="dark"]) .drawerLinkActive {
+  background: rgba(45, 43, 60, 0.75);
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(255, 107, 0, 0.25) !important;
+}
+
+:global([data-theme="dark"]) .drawerTranslateRow {
+  background: rgba(36, 35, 48, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .drawerHire {
+  background: var(--accent);
+  color: #1A1A1A;
+  border-color: var(--accent);
+}
+
+:global([data-theme="dark"]) .drawerResume {
+  background: rgba(36, 35, 48, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}

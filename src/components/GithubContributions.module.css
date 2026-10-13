@@ -1,0 +1,536 @@
+.githubCell {
+  grid-column: 1 / -1;
+  padding: 1.85rem 2.2rem;
+  border: var(--bw) solid var(--border);
+  border-radius: 26px;
+  background: var(--bg-tertiary);
+  box-shadow: 
+    12px 16px 32px rgba(0, 0, 0, 0.06),
+    -8px -8px 24px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.githubCell:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    16px 22px 42px rgba(0, 0, 0, 0.09),
+    -10px -10px 28px rgba(255, 255, 255, 0.95);
+}
+
+:global([data-theme="dark"]) .githubCell {
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.7),
+    0 4px 12px rgba(0, 0, 0, 0.45),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.08),
+    inset -3px -3px 8px rgba(0, 0, 0, 0.6);
+}
+
+:global([data-theme="dark"]) .githubCell:hover {
+  box-shadow:
+    0 20px 44px rgba(0, 0, 0, 0.85),
+    0 6px 16px rgba(0, 0, 0, 0.55),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.12);
+}
+
+/* ─── Header ──────────────────────────────────── */
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.octoIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  border: var(--bw) solid var(--border-light);
+  display: grid;
+  place-items: center;
+  color: var(--text-primary);
+  box-shadow:
+    3px 4px 10px rgba(0, 0, 0, 0.06),
+    -2px -2px 6px rgba(255, 255, 255, 0.9),
+    inset 1.5px 1.5px 3px rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
+:global([data-theme="dark"]) .octoIcon {
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.5),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+.titleWrap {
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+
+.cellTag {
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.cellTitle {
+  font-family: var(--font-head);
+  font-size: 1.55rem;
+  font-weight: 400;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* ─── Stats Badges ────────────────────────────── */
+.statsGroup {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.statBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .35rem .75rem;
+  border-radius: 14px;
+  border: var(--bw) solid var(--border);
+  background: var(--bg-secondary);
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  box-shadow:
+    2px 3px 6px rgba(0, 0, 0, 0.04),
+    -2px -2px 5px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+}
+
+:global([data-theme="dark"]) .statBadge {
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.5),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.06);
+}
+
+.statHighlight {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.githubLink {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .35rem .85rem;
+  border-radius: 14px;
+  border: var(--bw) solid var(--accent);
+  background: var(--accent);
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow:
+    3px 4px 10px rgba(255, 107, 0, 0.25),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.4);
+  transition: transform .2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .2s ease;
+}
+
+.githubLink:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    4px 6px 14px rgba(255, 107, 0, 0.4);
+}
+
+/* ─── Heatmap Scrollable Wrapper ──────────────── */
+.heatmapContainer {
+  width: 100%;
+  overflow-x: auto;
+  padding: .5rem 0 .25rem;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.heatmapContainer::-webkit-scrollbar {
+  height: 6px;
+}
+
+.heatmapContainer::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+/* ─── Loading Skeleton ────────────────────────── */
+.loadingSkeleton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  padding: 3rem 0;
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.calendarHidden {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.calendarVisible {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* ─── Embedded GitHub Calendar Styles ─────────── */
+.calendarWrapper {
+  min-width: 740px;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+/* Hide default raw unstyled texts and junk from GitHub HTML */
+.calendarWrapper :global(.f4),
+.calendarWrapper :global(#js-contribution-activity-description),
+.calendarWrapper :global(.hide-sm),
+.calendarWrapper :global(a[href*="year-link"]),
+.calendarWrapper :global(.contrib-column),
+.calendarWrapper :global(.contrib-footer),
+.calendarWrapper :global(.contrib-legend),
+.calendarWrapper :global(.ContributionCalendar-footer),
+.calendarWrapper :global(.float-left),
+.calendarWrapper :global(.float-right),
+.calendarWrapper :global(.left.text-muted),
+.calendarWrapper :global(.text-small),
+.calendarWrapper :global(.px-md-5),
+.calendarWrapper :global(a[href*="count-contributions"]),
+.calendarWrapper :global(a[href*="contributions"]),
+.calendarWrapper :global(#user-activity-overview),
+.calendarWrapper :global(tool-tip),
+.calendarWrapper :global(.day-tooltip),
+.calendarWrapper :global(caption.sr-only) {
+  display: none !important;
+}
+
+/* Reset default borders & margins from github-calendar */
+.calendarWrapper :global(.calendar) {
+  border: none !important;
+  background: transparent !important;
+  min-height: auto !important;
+  text-align: left !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.calendarWrapper :global(.js-calendar-graph) {
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+.calendarWrapper :global(table.ContributionCalendar-grid) {
+  border-spacing: 3.5px !important;
+  border-collapse: separate !important;
+  margin: 0 !important;
+  width: auto !important;
+}
+
+/* Month Labels (Thead) */
+.calendarWrapper :global(thead tr) {
+  height: 20px !important;
+}
+
+.calendarWrapper :global(td.ContributionCalendar-label) {
+  padding: 0 !important;
+  font-family: var(--font-mono) !important;
+  font-size: .68rem !important;
+  font-weight: 600 !important;
+  color: var(--text-muted) !important;
+  text-align: left !important;
+  position: relative !important;
+}
+
+.calendarWrapper :global(td.ContributionCalendar-label span[aria-hidden="true"]) {
+  font-family: var(--font-mono) !important;
+  font-size: .68rem !important;
+  font-weight: 600 !important;
+  color: var(--text-muted) !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+/* Day Labels (Mon, Wed, Fri in tbody) */
+.calendarWrapper :global(tbody td.ContributionCalendar-label) {
+  font-size: .62rem !important;
+  text-align: right !important;
+  padding-right: 6px !important;
+  width: 28px !important;
+}
+
+.calendarWrapper :global(tbody td.ContributionCalendar-label span[aria-hidden="true"]) {
+  position: static !important;
+  display: block !important;
+  text-align: right !important;
+  padding-right: 4px !important;
+  font-size: .62rem !important;
+  clip-path: none !important;
+}
+
+/* ─── Contribution Clay Tiles ─────────────────── */
+.calendarWrapper :global(td.ContributionCalendar-day) {
+  width: 11px !important;
+  height: 11px !important;
+  min-width: 11px !important;
+  min-height: 11px !important;
+  box-sizing: border-box !important;
+  border-radius: 3px !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  cursor: pointer !important;
+  position: relative !important;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.15s ease, box-shadow 0.15s ease !important;
+  outline: none !important;
+}
+
+.calendarWrapper :global(td.ContributionCalendar-day:hover) {
+  transform: scale(1.35) !important;
+  z-index: 10 !important;
+  filter: brightness(1.15) !important;
+}
+
+/* Light Mode Tile Levels (Warm Clay / Vibrant Orange Palette) */
+.calendarWrapper :global(td.ContributionCalendar-day[data-level='0']) {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-light) !important;
+}
+
+.calendarWrapper :global(td.ContributionCalendar-day[data-level='1']) {
+  background-color: #FFD2B0 !important;
+  border-color: #FFB380 !important;
+}
+
+.calendarWrapper :global(td.ContributionCalendar-day[data-level='2']) {
+  background-color: #FFA15A !important;
+  border-color: #FF8533 !important;
+}
+
+.calendarWrapper :global(td.ContributionCalendar-day[data-level='3']) {
+  background-color: #FF6B00 !important;
+  border-color: #E05800 !important;
+  box-shadow: 0 0 4px rgba(255, 107, 0, 0.35) !important;
+}
+
+.calendarWrapper :global(td.ContributionCalendar-day[data-level='4']) {
+  background-color: #D94800 !important;
+  border-color: #B33600 !important;
+  box-shadow: 0 0 6px rgba(217, 72, 0, 0.55) !important;
+}
+
+/* Dark Mode Tile Levels (Neon / Terminal Green Palette) */
+:global([data-theme="dark"]) .calendarWrapper :global(td.ContributionCalendar-day[data-level='0']) {
+  background-color: #121812 !important;
+  border-color: #1a261a !important;
+}
+
+:global([data-theme="dark"]) .calendarWrapper :global(td.ContributionCalendar-day[data-level='1']) {
+  background-color: #1a4d26 !important;
+  border-color: #246b35 !important;
+}
+
+:global([data-theme="dark"]) .calendarWrapper :global(td.ContributionCalendar-day[data-level='2']) {
+  background-color: #258a3e !important;
+  border-color: #2fb04f !important;
+}
+
+:global([data-theme="dark"]) .calendarWrapper :global(td.ContributionCalendar-day[data-level='3']) {
+  background-color: #2ed154 !important;
+  border-color: #38eb62 !important;
+  box-shadow: 0 0 6px rgba(46, 209, 84, 0.45) !important;
+}
+
+:global([data-theme="dark"]) .calendarWrapper :global(td.ContributionCalendar-day[data-level='4']) {
+  background-color: #39ff66 !important;
+  border-color: #70ff90 !important;
+  box-shadow: 0 0 8px rgba(57, 255, 102, 0.7) !important;
+}
+
+/* ─── Floating Tooltip ────────────────────────── */
+.customTooltip {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  background: #000000;
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .35rem .6rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: top 0.05s ease, left 0.05s ease;
+}
+
+.customTooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: #000000;
+}
+
+/* ─── Footer with Legend ──────────────────────── */
+.footerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: .5rem;
+  border-top: var(--bw) solid var(--border-light);
+}
+
+.footerNote {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text-muted);
+}
+
+.legendWrap {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text-muted);
+}
+
+.legendTiles {
+  display: flex;
+  gap: 3px;
+}
+
+.legendTile {
+  width: 10px;
+  height: 10px;
+  border-radius: 2.5px;
+}
+
+.level_0 {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+}
+
+.level_1 {
+  background: #FFD2B0;
+  border: 1px solid #FFB380;
+}
+
+.level_2 {
+  background: #FFA15A;
+  border: 1px solid #FF8533;
+}
+
+.level_3 {
+  background: #FF6B00;
+  border: 1px solid #E05800;
+}
+
+.level_4 {
+  background: #D94800;
+  border: 1px solid #B33600;
+}
+
+:global([data-theme="dark"]) .level_0 {
+  background: #121812;
+  border-color: #1a261a;
+}
+
+:global([data-theme="dark"]) .level_1 {
+  background: #1a4d26;
+  border-color: #246b35;
+}
+
+:global([data-theme="dark"]) .level_2 {
+  background: #258a3e;
+  border-color: #2fb04f;
+}
+
+:global([data-theme="dark"]) .level_3 {
+  background: #2ed154;
+  border-color: #38eb62;
+}
+
+:global([data-theme="dark"]) .level_4 {
+  background: #39ff66;
+  border-color: #70ff90;
+}
+
+/* ─── Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+  .githubCell {
+    padding: 1.4rem 1.25rem;
+    border-radius: 20px;
+  }
+
+  .headerRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .75rem;
+  }
+
+  .statsGroup {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .footerRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .5rem;
+  }
+}
